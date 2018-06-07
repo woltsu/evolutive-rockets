@@ -23,7 +23,7 @@ public class DNA {
         int move = this.moves[pointer];
         this.pointer++;
         if (this.pointer >= moves.length) {
-            return -1;
+            this.pointer = 0;
         }
         return move;
     }
@@ -50,11 +50,25 @@ public class DNA {
         
         for (int i = 0; i < moves1.length; i++) {
             if (this.r.nextDouble() >= 0.9) {
-                moves1[i] = this.r.nextInt(5);
+                while(true) {
+                    int mutation = this.r.nextInt(4);
+                    if (mutation == moves1[i]) {
+                        continue;
+                    }
+                    moves1[i] = mutation;
+                    break;
+                }
             }
             
             if (this.r.nextDouble() >= 0.9) {
-                moves2[i] = this.r.nextInt(5);
+                while(true) {
+                    int mutation = this.r.nextInt(4);
+                    if (mutation == moves2[i]) {
+                        continue;
+                    }
+                    moves2[i] = mutation;
+                    break;
+                }
             }
         }
         
@@ -66,20 +80,17 @@ public class DNA {
     private void init() {
         for (int i = 0; i < this.moves.length; i++) {
             double x = this.r.nextDouble();
-            if (x < 0.2) {
+            if (x < 0.25) {
                 this.moves[i] = 0;
                 
-            } else if (x < 0.4) {
+            } else if (x < 0.5) {
                 this.moves[i] = 1;
                 
-            } else if (x < 0.6) {
+            } else if (x < 0.75) {
                 this.moves[i] = 2;
                 
-            } else if (x < 0.8) {
-                this.moves[i] = 3;
-                
             } else {
-                this.moves[i] = 4;
+                this.moves[i] = 3;
                 
             }
         }

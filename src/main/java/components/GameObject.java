@@ -21,8 +21,8 @@ public abstract class GameObject {
     }
     
     public void accelerate() {
-        double changeX = Math.cos(Math.toRadians(this.shape.getRotate())) * 0.05;
-        double changeY = Math.sin(Math.toRadians(this.shape.getRotate())) * 0.05;
+        double changeX = Math.cos(Math.toRadians(this.shape.getRotate())) * 0.07;
+        double changeY = Math.sin(Math.toRadians(this.shape.getRotate())) * 0.07;
         
         this.movement = this.movement.add(changeX, changeY);
     }
@@ -32,6 +32,13 @@ public abstract class GameObject {
         double changeY = Math.sin(Math.toRadians(this.shape.getRotate())) * 0.05;
         
         this.movement = this.movement.subtract(changeX, changeY);
+    }
+    
+    public void addGravity() {
+        double changeX = Math.cos(Math.toRadians(90)) * 0.02;
+        double changeY = Math.sin(Math.toRadians(90)) * 0.02;
+        
+        this.movement = this.movement.add(changeX, changeY);
     }
     
     public void move() {

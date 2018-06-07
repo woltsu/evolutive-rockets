@@ -18,8 +18,9 @@ public class Population implements Updatable {
     public void generate() {
         this.generation++;
         this.players.clear();
-        for (int i = 0; i < 256; i++) {
-            this.players.add(new Player(5, 200));
+        for (int i = 0; i < 16; i++) {
+            //this.players.add(new Player(300, 380));
+            this.players.add(new Player(300, 375));
         }
     }
     
@@ -34,8 +35,12 @@ public class Population implements Updatable {
         List<Player> tempPlayers = new ArrayList();
         tempPlayers.addAll(this.players);
         Collections.sort(tempPlayers);
+        System.out.println("------");
+        System.out.println("BEST: " + tempPlayers.get(0).getScore());
+        System.out.println("WORST: " + tempPlayers.get(tempPlayers.size() - 1).getScore());
+        System.out.println("------");
         tempPlayers = tempPlayers.subList(0, tempPlayers.size() / 2);
-        // Collections.shuffle(tempPlayers);
+        Collections.shuffle(tempPlayers);
         this.players.clear();
         for (int i = 1; i <= tempPlayers.size() + 1; i++) {
             if (i % 2 == 0) {

@@ -43,45 +43,56 @@ public class GameLogic extends Application {
         Label label = new Label("Generation: " + population.getGeneration());
         field.getChildren().add(label);
         
-        this.addObstacle(field, 450, 100);
-        this.addObstacle(field, 450, 250);
-        this.addObstacle(field, 450, 400);
-        
-        this.addObstacle(field, 300, 100);
-        this.addObstacle(field, 300, 175);
-        this.addObstacle(field, 300, 325);
-        this.addObstacle(field, 300, 400);
-        
-        this.addObstacle(field, 150, 250);
-        this.addObstacle(field, 150, 325);
-        this.addObstacle(field, 150, 400);
+        this.addObstacle(field, 225, 200);
+//        this.addObstacle(field, 450, 250);
+//        this.addObstacle(field, 450, 400);
+//        
+//        this.addObstacle(field, 300, 100);
+//        this.addObstacle(field, 300, 175);
+//        this.addObstacle(field, 300, 325);
+//        this.addObstacle(field, 300, 400);
+//        
+//        this.addObstacle(field, 150, 250);
+//        this.addObstacle(field, 150, 325);
+//        this.addObstacle(field, 150, 400);
   
         Scene scene = new Scene(field);
         KeyListener keyListener = new KeyListener(scene);
         new AnimationTimer() {
             @Override
             public void handle(long timeNow) {
+                for (Player player : population.getPlayers()) {
+                    player.addGravity();
+                }
                 population.update();
+                population.getPlayers().stream().forEach(player -> {
+                        if (player.isDead()) {
+                            return;
+                        }
+                        if (player.getShape().getTranslateX() > width ||
+                            player.getShape().getTranslateX() < 0 || 
+                            player.getShape().getTranslateY() > height ||
+                            player.getShape().getTranslateY() < 0) {
+                            player.die();
+                        }
+                    });
+                
                 obstacles.stream().forEach(obstacle -> {
                     population.getPlayers().stream().forEach(player -> {
                         if (player.isDead()) {
                             return;
                         }
-                        if (player.collides(obstacle) || 
-                                player.getShape().getTranslateX() > width ||
-                                player.getShape().getTranslateX() < 0 || 
-                                player.getShape().getTranslateY() > height ||
-                                player.getShape().getTranslateY() < 0) {
+                        if (player.collides(obstacle)) {
                             player.die();
                         }
                     });
-                    if (population.allDead()) {
-                        field.getChildren().removeAll(population.getShapes());
-                        population.repopulate();
-                        field.getChildren().addAll(population.getShapes());
-                        label.setText("Generation: " + population.getGeneration());
-                    }
                 });
+                if (population.allDead()) {
+                    field.getChildren().removeAll(population.getShapes());
+                    population.repopulate();
+                    field.getChildren().addAll(population.getShapes());
+                    label.setText("Generation: " + population.getGeneration());
+                }
             }
         }.start();
         
